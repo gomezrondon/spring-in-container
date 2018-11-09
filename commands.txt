@@ -1,7 +1,5 @@
-./gradlew clean build -x test unpack docker
-docker images |grep 'myapp'
-xxxx no need for this: docker build -t  gomezrondon/spring-container .
-docker run -p 8080:8080 com.gomezrondon/myapp -d
+./gradlew jibDockerBuild
+docker run -p 8080:8080 spring-in-container:unspecified -d
 docker ps
 docker stop <CONTAINER ID>
 
