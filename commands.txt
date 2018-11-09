@@ -1,5 +1,9 @@
-./gradlew clean build -x test unzip
-docker build -t  gomezrondon/spring-container .
-docker run -p 8080:8080 gomezrondon/spring-container -d
+./gradlew clean build -x test unpack docker
+docker images |grep 'myapp'
+xxxx no need for this: docker build -t  gomezrondon/spring-container .
+docker run -p 8080:8080 com.gomezrondon/myapp -d
 docker ps
 docker stop <CONTAINER ID>
+
+how to test
+http://192.168.99.100:8080/time
