@@ -1,0 +1,5 @@
+./gradlew clean build -x test unzip
+docker build -t  gomezrondon/spring-container .
+docker run -p 8080:8080 gomezrondon/spring-container -d
+docker ps
+docker stop <CONTAINER ID>

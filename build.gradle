@@ -28,3 +28,15 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-web')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
+
+
+task unzip(type: Copy) {
+
+	def zipPath = "${buildDir}/libs/" + project.name+".jar"
+	println zipPath
+	def zipFile = file(zipPath)
+	def outputDir = file("${buildDir}/libs")
+
+	from zipTree(zipFile)
+	into outputDir
+}
