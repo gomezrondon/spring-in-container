@@ -43,7 +43,7 @@ dependencies {
 
 task unzip(type: Copy) {
 
-	def zipPath = "${buildDir}/libs/spring-in-container.jar"
+	def zipPath = "${buildDir}/libs/${rootProject.name}.jar"
 	println zipPath
 	def zipFile = file(zipPath)
 	def outputDir = file("${buildDir}/libs")
