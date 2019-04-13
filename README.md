@@ -1,4 +1,4 @@
-# spring-aws-sqs
+# spring-in-container
 Testing ways of better containerization of spring apps
 
 1) Turn on the Docker Engine.
