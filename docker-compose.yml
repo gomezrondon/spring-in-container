@@ -1,0 +1,8 @@
+version: '2.1'
+
+services:
+  micro-proxy:
+    build: .
+    container_name: spring-container
+    ports:
+      - 8080:8080
