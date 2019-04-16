@@ -1,4 +1,4 @@
-package com.gomezrondon.springincontainer;
+package com.gomezrondon.springincontainer.controller;
 
 
 import org.springframework.web.bind.annotation.GetMapping;
