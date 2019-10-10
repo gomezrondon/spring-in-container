@@ -11,14 +11,13 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath('com.google.cloud.tools.jib:com.google.cloud.tools.jib.gradle.plugin:0.9.11')
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
 	}
 }
 
 plugins {
-	id 'com.google.cloud.tools.jib' version '0.9.11'
+	id 'com.google.cloud.tools.jib' version '1.6.1'
 }
 
 apply plugin: 'java'
