@@ -53,3 +53,13 @@ to stop the running container
 ```
 docker-compose down
 ```
+
+--------------------
+testing new EndPoint with Httpie
+http POST http://localhost:8080/quote/add < quote.json
+
+--quote.json
+{
+  "userName":"javier",
+  "quote":"AMZN"
+}
