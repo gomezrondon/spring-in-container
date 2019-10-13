@@ -6,3 +6,17 @@ services:
     container_name: spring-container
     ports:
       - 8080:8080
+  db:
+    container_name: db
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: roor
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    volumes:
+      - my-datavolume:/var/lib/mysql
+volumes:
+  my-datavolume:
