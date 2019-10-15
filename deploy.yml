@@ -11,6 +11,22 @@ spec:
     spec:
       containers:
         - name: spring-in-container
-          image: 'gcr.io/<project-id>/spring-in-container:v1'
+          image: 'gcr.io/find-seller-255522/spring-in-container:v1'
           ports:
             - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-in-container-service
+  labels:
+    name: spring-in-container-service
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+  selector:
+    app: spring-in-container
+  type: LoadBalancer
