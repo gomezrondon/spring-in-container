@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: spring-in-container
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: spring-in-container
+    spec:
+      containers:
+        - name: spring-in-container
+          image: 'gcr.io/<project-id>/spring-in-container:v1'
+          ports:
+            - containerPort: 8080
