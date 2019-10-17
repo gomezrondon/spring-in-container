@@ -9,6 +9,9 @@ http://192.168.99.100:8080/time
 kubectl create -f pod-postgres.yml
 kubectl create -f pod-mysql.yml
 
+#para borrar
+kubectl delete -f pod-mysql.yml
+
 #this works but dont do it for production
 kubectl create configmap secret-config \
 --from-literal=postgres_user=root \
@@ -22,3 +25,24 @@ kubectl get pods
 kubectl get services
 kubectl get deployments
 kubectl logs [pod name]
+
+#create persistance
+gcloud compute disks list
+gcloud compute disks create --size 100GB mysql-disk --zone us-central1-a
+gcloud compute disks delete mysql-disk --zone us-central1-a
+
+#access the db
+kubectl exec -ti mysql -- /bin/bash
+root@mysql:/# mysql -u root -ppassword
+
+create schema test;
+use test
+show tables;
+
+CREATE TABLE IF NOT EXISTS tasks (
+    task_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)  ENGINE=INNODB;
+
+describe [table name]
