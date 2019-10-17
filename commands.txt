@@ -5,3 +5,20 @@ docker stop <CONTAINER ID>
 
 how to test
 http://192.168.99.100:8080/time
+
+kubectl create -f pod-postgres.yml
+kubectl create -f pod-mysql.yml
+
+#this works but dont do it for production
+kubectl create configmap secret-config \
+--from-literal=postgres_user=root \
+--from-literal=postgres_password=123456 \
+--from-literal=mysql_user=roor \
+--from-literal=mysql_password=root \
+--from-literal=mysql_root_password=root \
+--from-literal=mysql_database=test
+
+kubectl get pods
+kubectl get services
+kubectl get deployments
+kubectl logs [pod name]
