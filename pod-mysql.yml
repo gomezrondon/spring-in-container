@@ -2,11 +2,26 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mysql
+  labels:
+    app: mysql
 spec:
   ports:
     - port: 3306
   selector:
     app: mysql
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: Pod
@@ -17,7 +32,7 @@ metadata:
 spec:
   containers:
     - name: mysql
-      image: "mysql:5.7"
+      image: mysql:5.6
       env:
         - name: MYSQL_USER
           valueFrom:
@@ -43,10 +58,9 @@ spec:
         - containerPort: 3306
           name: mysql
       volumeMounts:
-       - name: mysql-storage
-         mountPath: /var/lib/mysql
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
   volumes:
-    - name: mysql-storage
-      gcePersistentDisk:
-        fsType: ext4
-        pdName: mysql-disk
+    - name: mysql-persistent-storage
+      persistentVolumeClaim:
+        claimName: mysql-pv-claim
