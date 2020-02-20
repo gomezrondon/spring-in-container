@@ -1,35 +1,52 @@
-plugins {
-	id 'org.springframework.boot' version '2.2.0.RC1'
-	id 'io.spring.dependency-management' version '1.0.8.RELEASE'
-	id 'java'
-	id 'com.google.cloud.tools.jib' version '1.6.1'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.50'
+buildscript {
+	ext.kotlin_version = '1.3.30'
+	ext {
+		springBootVersion = '2.1.0.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+	}
 }
+
+plugins {
+	id 'com.google.cloud.tools.jib' version '1.6.1'
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
 
 group = 'com.gomezrondon'
 //version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
-	maven { url 'https://repo.spring.io/milestone' }
 }
+
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'mysql:mysql-connector-java'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation('org.springframework.boot:spring-boot-starter-web')
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
-	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-	compile "org.jetbrains.kotlin:kotlin-reflect"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
-test {
-	useJUnitPlatform()
-}
+
+
 task unzip(type: Copy) {
 
-	def zipPath = "${buildDir}/libs/spring-in-container.jar"
+	def zipPath = "${buildDir}/libs/${rootProject.name}.jar"
 	println zipPath
 	def zipFile = file(zipPath)
 	def outputDir = file("${buildDir}/libs")
@@ -38,12 +55,12 @@ task unzip(type: Copy) {
 	into outputDir
 }
 compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+	kotlinOptions {
+		jvmTarget = "1.8"
+	}
 }
 compileTestKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+	kotlinOptions {
+		jvmTarget = "1.8"
+	}
 }
