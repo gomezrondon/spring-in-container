@@ -18,7 +18,7 @@ ext {
 }
 
 dependencies {
-	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-kubernetes-all'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-kubernetes'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.cloud:spring-cloud-starter'
 	implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -46,6 +46,19 @@ compileTestKotlin {
 	}
 }
 
+import org.apache.tools.ant.taskdefs.condition.Os
+
+task checkWin(type:Exec){
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+		println "*** Windows "
+	}else
+	if (Os.isFamily(Os.FAMILY_UNIX)) {
+		commandLine 'bash', '-c', 'gradle build -x test'
+		println "*** Linux "
+	}
+}
+
+
 ext {
 	set('gcpProjectName', "ut-265822")
 	set('gcpProjectVersion', "v1")
@@ -53,4 +66,42 @@ ext {
 
 bootBuildImage {
 	imageName = "gcr.io/${gcpProjectName}/${project.name}:${gcpProjectVersion}"
+	//imageName = "${project.name}:${gcpProjectVersion}"
+}
+
+
+task pushImageToGCR(type:Exec){
+	dependsOn bootBuildImage
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+		commandLine 'bash', '-c', "docker push ${bootBuildImage.imageName}"
+	}else
+	if (Os.isFamily(Os.FAMILY_UNIX)) {
+		println "*** Linux "
+		commandLine 'bash', '-c', "docker push ${bootBuildImage.imageName}"
+	}
+}
+
+
+
+task generateK8sYml(type: Exec){
+
+	commandLine 'cmd', '/c', "kubectl create deployment ${project.name} --image=${project.name}:v1 --dry-run -o=yaml > deploy-app.yaml"
+	commandLine 'cmd', '/c', "kubectl create service clusterip ${project.name} --tcp=8080:8080 --dry-run -o=yaml > app-service.yaml"
+
+}
+
+ext {
+	command = project.hasProperty('command') ? project.property('command') : 'run'
+	//gradle skaRun -Pcommand=run
+}
+
+task skaRun(type:Exec) {
+	if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+		println "*** Windows "
+		commandLine 'cmd', '/c', 'skaffold ' + command
+	}else
+	if (Os.isFamily(Os.FAMILY_UNIX)) {
+		println "*** Linux "
+		commandLine 'bash', '-c', 'skaffold ' + command
+	}
 }
