@@ -1,19 +1,36 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-in-container
+  labels:
+    app: spring-in-container-service
+  name: spring-in-container-service
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: spring-in-container-service
+  strategy: {}
   template:
     metadata:
       labels:
-        app: spring-in-container
+        app: spring-in-container-service
     spec:
       containers:
-        - name: spring-in-container
-          image: 'gcr.io/find-seller-255522/spring-in-container:v1'
+        - image: gcr.io/ut-265822/spring-in-container:v1
+          name: spring-in-container-service
           ports:
             - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /time
+              port: 8080
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /time
+              port: 8080
+            initialDelaySeconds: 10
+      restartPolicy: Always
 
 ---
 apiVersion: v1
@@ -28,5 +45,5 @@ spec:
       targetPort: 8080
       protocol: TCP
   selector:
-    app: spring-in-container
+    app: spring-in-container-service
   type: LoadBalancer
