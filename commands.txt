@@ -5,3 +5,25 @@ docker stop <CONTAINER ID>
 
 how to test
 http://192.168.99.100:8080/time
+
+kubectl get deployment  // get info of deployment
+kubectl delete deployment <deploy name>
+** stop a deployment **
+kubectl delete deployment spring-in-container-service
+--------------
+1) create the image
+gradle clean bootBuildImage
+2) create the skaffold config file
+skaffold version
+3) deployamos
+gradle skaRun -Pcommand=deploy
+gradle skaRun -Pcommand=delete  //destroy all service
+4) chequeamos el deployment
+kubectl get deployment
+5) revisamos el log del pod
+5.1) get the full name of the pod
+kubectl get pod
+5.2) revisamos el log del pod
+kubectl logs -f spring-in-container-service-74c466b554-jmq4n
+6) stopping the deployment
+gradle skaRun -Pcommand=delete
