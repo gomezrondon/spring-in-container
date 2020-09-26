@@ -1,7 +1,7 @@
-version: '2.1'
+version: '2'
 
 services:
-  micro-proxy:
+  spring-container:
     build: .
     container_name: spring-container
     ports:

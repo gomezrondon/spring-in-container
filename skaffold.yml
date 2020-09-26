@@ -2,13 +2,15 @@ apiVersion: skaffold/v1
 kind: Config
 metadata:
   name: my-skaffold-spring-in-container
-#build:
-#  artifacts:
-#    - image: gcr.io/ut-265822/car-service
-#      custom:
-#        buildCommand: gradle bootBuildImage
-
+build:
+  local:
+    push: false
+  # Generated artifact
+  artifacts:
+    - image: gcr.io/ut-265822/spring-in-container
+      # Use jibMaven
+      jib: {}
 deploy:
   kubectl:
     manifests:
-      - deploy.yml
+      - ./k8s/*.yaml
