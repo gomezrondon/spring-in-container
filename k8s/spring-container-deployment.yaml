@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spring-container
+  name: spring-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-container
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: spring-container
+    spec:
+      containers:
+      - image: gcr.io/ut-265822/spring-in-container
+        imagePullPolicy: Never
+        name: spring-container
+        ports:
+        - containerPort: 8080
+        resources: {}
+      restartPolicy: Always
+status: {}
